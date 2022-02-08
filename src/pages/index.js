@@ -1,22 +1,26 @@
 import React from 'react';
+import { Navbar } from '../components';
 
 const Home = ({data}) => {
 
   console.log(data)
 
   return (
-    <main>
+    <main className='main'>
       <div className='container'>
-        <h1>Ini Home</h1>
-        {
-          data.items && data?.items?.map((item) => (
-            <div key={item?.id} className='cards'>
-              <h4>
-                {item?.name}
-              </h4>
-            </div>
-          ))
-        }
+        <div className='main-row'>
+          {
+            data.items && data?.items?.map((item) => (
+              <div key={item?.id} className='cards'>
+                <h4>
+                  {item?.name}
+                </h4>
+                <p>Rp {item?.price}</p>
+              </div>
+            ))
+          }
+        </div>
+        <Navbar />
       </div>
     </main>
   )
@@ -29,12 +33,11 @@ export async function getServerSideProps({res}) {
 
     const response = await fetch(`${url}/products?searchCriteria[pageSize]=10`)
     const { items } = await response.json()
-    const dataProducts = JSON.parse(items)
 
     return { 
       props: { 
         data: {
-          dataProducts
+          items
         }
       } 
     }
